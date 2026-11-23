@@ -8,6 +8,7 @@ describe("Maasai Mara accommodation directory", () => {
   it("keeps Mara Triangle stays distinct from conservancy and gate-area stays", () => {
     expect(accommodations.find((stay) => stay.slug === "mara-serena-safari-lodge")?.locationKind).toBe("reserve");
     expect(accommodations.find((stay) => stay.slug === "mahali-mzuri")?.locationKind).toBe("private-conservancy");
+    expect(accommodations.find((stay) => stay.slug === "basecamp-wilderness")?.locationKind).toBe("community-conservancy");
     expect(accommodations.find((stay) => stay.slug === "kambu-mara-camp")?.locationKind).toBe("outside-reserve");
   });
 
@@ -15,6 +16,14 @@ describe("Maasai Mara accommodation directory", () => {
     const results = filterAccommodations(accommodations, { ...allFilters, locationKind: "reserve" });
     expect(results.length).toBeGreaterThan(0);
     expect(results.every((stay) => stay.locationKind === "reserve")).toBe(true);
+  });
+
+  it("keeps private and community conservancy filters separate", () => {
+    const community = filterAccommodations(accommodations, { ...allFilters, locationKind: "community-conservancy" });
+    const privateLand = filterAccommodations(accommodations, { ...allFilters, locationKind: "private-conservancy" });
+
+    expect(community.map((stay) => stay.slug)).toEqual(["basecamp-wilderness"]);
+    expect(privateLand.map((stay) => stay.slug)).toEqual(["mahali-mzuri"]);
   });
 
   it("finds accommodation by property name, area, or accommodation style", () => {

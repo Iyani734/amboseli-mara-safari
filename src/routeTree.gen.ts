@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccommodationIndexRouteImport } from './routes/accommodation.index'
+import { Route as AccommodationSlugRouteImport } from './routes/accommodation.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const AccommodationIndexRoute = AccommodationIndexRouteImport.update({
   path: '/accommodation/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccommodationSlugRoute = AccommodationSlugRouteImport.update({
+  id: '/accommodation/$slug',
+  path: '/accommodation/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accommodation/$slug': typeof AccommodationSlugRoute
   '/accommodation/': typeof AccommodationIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accommodation/$slug': typeof AccommodationSlugRoute
   '/accommodation': typeof AccommodationIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accommodation/$slug': typeof AccommodationSlugRoute
   '/accommodation/': typeof AccommodationIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/accommodation/'
+  fullPaths: '/' | '/accommodation/$slug' | '/accommodation/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/accommodation'
-  id: '__root__' | '/' | '/accommodation/'
+  to: '/' | '/accommodation/$slug' | '/accommodation'
+  id: '__root__' | '/' | '/accommodation/$slug' | '/accommodation/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccommodationSlugRoute: typeof AccommodationSlugRoute
   AccommodationIndexRoute: typeof AccommodationIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccommodationIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/accommodation/$slug': {
+      id: '/accommodation/$slug'
+      path: '/accommodation/$slug'
+      fullPath: '/accommodation/$slug'
+      preLoaderRoute: typeof AccommodationSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccommodationSlugRoute: AccommodationSlugRoute,
   AccommodationIndexRoute: AccommodationIndexRoute,
 }
 export const routeTree = rootRouteImport

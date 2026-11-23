@@ -25,6 +25,7 @@ export function StayCard({ stay, onCompare, comparing }: {
           <span className="absolute left-4 top-4 bg-background/95 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-foreground">
             {stay.category ?? "Category not confirmed"}
           </span>
+          <span className="absolute bottom-3 left-3 bg-background/95 px-2.5 py-1.5 text-[10px] font-medium text-foreground">Illustrative image</span>
         </div>
         <div className="px-5 pb-1 pt-5">
           <p className="mara-eyebrow flex items-center gap-1.5 text-muted-foreground"><MapPin className="size-3" aria-hidden="true" />{stay.location}</p>
@@ -89,7 +90,7 @@ export function CompareTray({ stays, onRemove, onClear }: {
               <tbody>
                 {[
                   ["Location", (stay: Accommodation) => stay.location],
-                  ["Location category", (stay: Accommodation) => stay.locationKind === "reserve" ? "Inside national reserve" : stay.locationKind === "private-conservancy" ? "Private conservancy" : "Outside reserve"],
+                  ["Location category", (stay: Accommodation) => stay.locationKind === "reserve" ? "Inside national reserve" : stay.locationKind === "private-conservancy" ? "Private conservancy" : stay.locationKind === "community-conservancy" ? "Community conservancy" : "Outside reserve"],
                   ["Accommodation type", (stay: Accommodation) => stay.type],
                   ["Price category", (stay: Accommodation) => stay.category ?? "Not confirmed"],
                   ["Nearest gate", (stay: Accommodation) => stay.nearestGate ?? "Not confirmed"],
