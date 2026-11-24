@@ -32,6 +32,7 @@ export function StayCard({ stay, onCompare, comparing }: {
           <h3 className="mt-2 text-[22px] leading-tight text-foreground">{stay.name}</h3>
           <p className="mt-2 text-sm text-muted-foreground">{stay.type}</p>
           <p className="mt-3 line-clamp-2 min-h-10 text-sm leading-5 text-foreground/80">{stay.summary}</p>
+          {stay.features && stay.features.length > 0 && <div className="mt-3 flex flex-wrap gap-1.5">{stay.features.slice(0, 3).map((feature) => <span key={feature} className="border border-border px-2 py-1 text-[10px] text-muted-foreground">{feature}</span>)}</div>}
         </div>
       </Link>
       <div className="mt-4 flex items-center justify-between gap-3 border-t border-border px-5 py-4">

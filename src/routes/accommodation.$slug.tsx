@@ -62,6 +62,7 @@ function AccommodationDetailPage() {
           <p className="mara-eyebrow text-primary">{stay.type} · Maasai Mara</p>
           <h1 className="mt-3 text-4xl leading-tight text-foreground md:text-5xl">{stay.name}</h1>
           <p className="mt-4 text-base leading-7 text-muted-foreground">{stay.summary}</p>
+          {stay.features && stay.features.length > 0 && <div className="mt-4 flex flex-wrap gap-2" aria-label="Features confirmed by the source">{stay.features.map((feature) => <span key={feature} className="border border-border bg-card px-3 py-1.5 text-xs text-foreground">{feature}</span>)}</div>}
 
           <div className="mt-6 grid grid-cols-2 border-y border-border">
             <div className="border-r border-border py-4 pr-4"><p className="mara-eyebrow text-muted-foreground">Setting</p><p className="mt-1 text-sm font-medium text-foreground">{locationLabel}</p></div>
@@ -94,15 +95,14 @@ function AccommodationDetailPage() {
             <h2 className="mt-2 text-3xl text-foreground">Before you book</h2>
             <p className="mt-4 text-sm leading-6 text-muted-foreground">The following details are not confirmed in the sources checked for this guide. Contact the property directly for current information.</p>
             <ul className="mt-4 grid gap-x-5 gap-y-2 text-sm text-foreground sm:grid-cols-2">
-              {["Current rates & inclusions", "Room or tent options", "Facilities & pool", "Wi-Fi & electricity", "Family and child policies", "Meal plans and activities", "Exact map pin and gate distance", "Availability and booking terms"].map((item) => <li key={item} className="border-b border-border py-2">{item}</li>)}
+              {["Current rates & inclusions", "Room or tent options", "Facilities & pool", "Wi-Fi & electricity", "Family and child policies", "Meal plans and activities", "Exact map pin, transfer time & route", "Availability and booking terms"].map((item) => <li key={item} className="border-b border-border py-2">{item}</li>)}
             </ul>
           </div>
         </div>
       </section>
 
-      <section className="mara-container grid gap-5 py-10 md:grid-cols-[1fr_auto] md:items-center">
+      <section className="mara-container py-10">
         <div><p className="mara-eyebrow text-primary">Source checked</p><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Location and confirmed notes above are based on the source linked here. The source may not be the property’s own website; confirm current details directly before booking.</p><a href={stay.sourceUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary underline underline-offset-4">{stay.sourceLabel}<ArrowUpRight aria-hidden="true" className="size-4" /></a></div>
-        <Button asChild variant="outline" className="rounded-none"><a href="mailto:hello@themarafieldguide.example?subject=Listing%20correction">Suggest a correction</a></Button>
       </section>
     </main>
   );

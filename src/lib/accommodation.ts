@@ -12,6 +12,7 @@ export type Accommodation = {
   accessNote: string;
   summary: string;
   facts: string[];
+  features?: string[];
   image: string;
   sourceLabel: string;
   sourceUrl: string;
@@ -80,14 +81,14 @@ export const accommodations: Accommodation[] = [
     type: "Tented camp",
     category: "Luxury",
     location: "Olare Motorogi Conservancy",
-    locationKind: "community-conservancy",
+    locationKind: "private-conservancy",
     accessNote: "Inside Olare Motorogi Conservancy, not inside the national reserve. Ask the property about transfers and conservancy access.",
     summary: "An intimate luxury tented camp in the private Olare Motorogi Conservancy.",
     facts: ["The property lists 12 tented suites, an infinity pool and a spa."],
+    features: ["Swimming pool", "Spa"],
     image: "/images/mara-eco-lodge.jpg",
     sourceLabel: "Mahali Mzuri property profile",
     sourceUrl: "https://www.nakedwilderness.com/properties/mahali-mzuri/",
-    officialUrl: "https://www.nakedwilderness.com/properties/mahali-mzuri/",
   },
   {
     slug: "basecamp-wilderness",
@@ -95,14 +96,14 @@ export const accommodations: Accommodation[] = [
     type: "Tented camp",
     category: "Luxury",
     location: "Naboisho Conservancy",
-    locationKind: "private-conservancy",
+    locationKind: "community-conservancy",
     accessNote: "Inside Naboisho Conservancy, not inside the national reserve. The property lists Ol Seki Airstrip for access.",
     summary: "A small eco-luxury tented camp in the community-owned Naboisho Conservancy.",
     facts: ["The property profile lists eight tented rooms and guided bush walks."],
+    features: ["Family-friendly", "Limited Wi-Fi", "Guided walks"],
     image: "/images/mara-camp.jpg",
     sourceLabel: "Basecamp Wilderness property profile",
     sourceUrl: "https://www.masaimara.com/basecamp-wilderness.php",
-    officialUrl: "https://sarunibasecamp.com/mara-naboisho-conservancy/",
   },
   {
     slug: "basecamp-masai-mara",
@@ -112,10 +113,11 @@ export const accommodations: Accommodation[] = [
     locationKind: "outside-reserve",
     accessNote: "Located outside the reserve near Talek town. Nearest gate and transfer times are not confirmed here; ask the property.",
     summary: "A riverside tented camp near Talek, outside the national reserve boundary.",
-    facts: ["The directory profile describes its setting beside the Talek River, near Talek town."],
+    facts: ["A directory places the camp near Talek, outside the national reserve’s north-eastern boundary."],
+    features: ["Family-friendly", "Wi-Fi"],
     image: "/images/mara-tented-camp.jpg",
-    sourceLabel: "Masai Mara Reserve directory",
-    sourceUrl: "https://www.masaimarareserve.com/lodge/basecamp-masai-mara/",
+    sourceLabel: "Safari Sights accommodation guide",
+    sourceUrl: "https://safarisights.com/masai-mara/lodges",
   },
   {
     slug: "kambu-mara-camp",
@@ -128,6 +130,7 @@ export const accommodations: Accommodation[] = [
     accessNote: "The property states it is 8 km from Sekenani Gate and outside the reserve and conservancies.",
     summary: "A budget-friendly camp near Sekenani Gate, outside both the reserve and conservancies.",
     facts: ["The property lists en-suite and shared washroom options, plus self-catering and restaurant meals."],
+    features: ["Self-catering", "Restaurant", "En-suite options"],
     image: "/images/mara-camp.jpg",
     sourceLabel: "Kambu Mara Camp",
     sourceUrl: "https://kambucampers.com/kambu-campers-mara-camp/",
@@ -154,6 +157,7 @@ export type AccommodationFilters = {
   category: PriceCategory | "All";
   locationKind: LocationKind | "All";
   gate: string | "All";
+  feature: string | "All";
 };
 
 export function filterAccommodations(
@@ -171,7 +175,8 @@ export function filterAccommodations(
     const matchesCategory = filters.category === "All" || item.category === filters.category;
     const matchesLocation = filters.locationKind === "All" || item.locationKind === filters.locationKind;
     const matchesGate = filters.gate === "All" || item.nearestGate === filters.gate;
-    return matchesQuery && matchesCategory && matchesLocation && matchesGate;
+    const matchesFeature = filters.feature === "All" || item.features?.includes(filters.feature) === true;
+    return matchesQuery && matchesCategory && matchesLocation && matchesGate && matchesFeature;
   });
 }
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { accommodations, filterAccommodations } from "@/lib/accommodation";
 
-const allFilters = { query: "", category: "All" as const, locationKind: "All" as const, gate: "All" as const };
+const allFilters = { query: "", category: "All" as const, locationKind: "All" as const, gate: "All" as const, feature: "All" as const };
 
 describe("Maasai Mara accommodation directory", () => {
   it("keeps Mara Triangle stays distinct from conservancy and gate-area stays", () => {
@@ -36,5 +36,10 @@ describe("Maasai Mara accommodation directory", () => {
   it("does not show entries without an observed price tier in a price-category filter", () => {
     const results = filterAccommodations(accommodations, { ...allFilters, category: "Budget" });
     expect(results.map((stay) => stay.slug)).toEqual(["kambu-mara-camp"]);
+  });
+
+  it("filters facilities only for properties whose source confirms the feature", () => {
+    const results = filterAccommodations(accommodations, { ...allFilters, feature: "Swimming pool" });
+    expect(results.map((stay) => stay.slug)).toEqual(["mahali-mzuri"]);
   });
 });

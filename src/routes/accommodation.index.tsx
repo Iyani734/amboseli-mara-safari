@@ -26,19 +26,22 @@ const locationOptions: { label: string; value: LocationKind | "All" }[] = [
   { label: "All locations", value: "All" },
   { label: "Inside the reserve", value: "reserve" },
   { label: "Private conservancies", value: "private-conservancy" },
+  { label: "Community conservancies", value: "community-conservancy" },
   { label: "Outside the reserve", value: "outside-reserve" },
 ];
 const categoryOptions: (PriceCategory | "All")[] = ["All", "Luxury", "Mid-range", "Budget"];
 const gates = ["All", "Sekenani Gate", "Talek Gate", "Oloolaimutia Gate", "Musiara Gate", "Sand River Gate", "Oloololo Gate"];
+const features = ["All", ...new Set(accommodations.flatMap((stay) => stay.features ?? []))];
 
 function AccommodationPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<PriceCategory | "All">("All");
   const [locationKind, setLocationKind] = useState<LocationKind | "All">("All");
   const [gate, setGate] = useState("All");
+  const [feature, setFeature] = useState("All");
   const [type, setType] = useState("All");
   const [shortlist, setShortlist] = useState<Accommodation[]>([]);
-  const filtered = useMemo(() => filterAccommodations(accommodations, { query, category, locationKind, gate }), [query, category, locationKind, gate]);
+  const filtered = useMemo(() => filterAccommodations(accommodations, { query, category, locationKind, gate, feature }), [query, category, locationKind, gate, feature]);
   const results = filtered.filter((stay) => type === "All" || stay.type === type);
   const types = ["All", ...new Set(accommodations.map((stay) => stay.type))];
 
@@ -51,7 +54,7 @@ function AccommodationPage() {
   }
 
   function clearFilters() {
-    setQuery(""); setCategory("All"); setLocationKind("All"); setGate("All"); setType("All");
+    setQuery(""); setCategory("All"); setLocationKind("All"); setGate("All"); setFeature("All"); setType("All");
   }
 
   return (
@@ -82,9 +85,9 @@ function AccommodationPage() {
             <div className="flex items-center justify-between gap-3"><div><p className="mara-eyebrow text-primary">Browse the directory</p><h2 className="mt-2 text-3xl text-foreground">Find your kind of stay</h2></div><SlidersHorizontal className="size-5 text-primary" aria-hidden="true" /></div>
             <div id="directory" className="mt-5 grid gap-4 sm:grid-cols-2">
               {locationOptions.slice(1).map((option) => (
-                <button type="button" key={option.value} onClick={() => setLocationKind(option.value)} aria-pressed={locationKind === option.value} className={`border p-4 text-left transition-colors ${locationKind === option.value ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:border-primary"}`}>
-                  <span className="mara-eyebrow opacity-75">{option.value === "reserve" ? "In the reserve" : option.value === "private-conservancy" ? "Community & private land" : "Near the gates"}</span><span className="mt-2 block text-lg font-medium">{option.label}</span>
-                </button>
+                <Button type="button" key={option.value} variant={locationKind === option.value ? "default" : "outline"} onClick={() => setLocationKind(option.value)} aria-pressed={locationKind === option.value} className="h-auto min-h-24 w-full flex-col items-start whitespace-normal rounded-none p-4 text-left shadow-none">
+                  <span className="mara-eyebrow opacity-75">{option.value === "reserve" ? "In the reserve" : option.value === "private-conservancy" ? "Privately managed land" : option.value === "community-conservancy" ? "Community-led conservation" : "Outside the boundary"}</span><span className="mt-2 block text-lg font-medium">{option.label}</span>
+                </Button>
               ))}
               <a href="https://maraconservancies.org/mara-conservancies-map/" target="_blank" rel="noreferrer" className="flex items-center justify-between border border-border bg-card p-4 text-foreground transition-colors hover:border-primary"><span><span className="mara-eyebrow text-muted-foreground">Explore the ecosystem</span><span className="mt-2 block text-lg font-medium">Conservancy map</span></span><ArrowUpRight className="size-5 text-primary" aria-hidden="true" /></a>
             </div>
@@ -94,18 +97,19 @@ function AccommodationPage() {
 
       <section className="border-y border-border bg-secondary/50 py-8" aria-label="Accommodation search filters">
         <div className="mara-container">
-          <div className="grid gap-4 lg:grid-cols-[minmax(220px,1.3fr)_1fr_1.3fr_1fr_auto]">
+          <div className="grid gap-4 lg:grid-cols-[minmax(210px,1.3fr)_1fr_1.3fr_1fr_1fr_1fr]">
             <label className="relative block"><span className="sr-only">Search accommodation</span><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" /><Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search camps, area, type…" className="h-11 rounded-none bg-background pl-10" /></label>
             <label className="flex flex-col gap-1"><span className="mara-eyebrow text-muted-foreground">Price tier</span><select value={category} onChange={(event) => setCategory(event.target.value as PriceCategory | "All")} className="h-10 border border-input bg-background px-3 text-sm text-foreground"><option value="All">All tiers</option>{categoryOptions.slice(1).map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
             <label className="flex flex-col gap-1"><span className="mara-eyebrow text-muted-foreground">Location</span><select value={locationKind} onChange={(event) => setLocationKind(event.target.value as LocationKind | "All")} className="h-10 border border-input bg-background px-3 text-sm text-foreground">{locationOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
             <label className="flex flex-col gap-1"><span className="mara-eyebrow text-muted-foreground">Nearest gate</span><select value={gate} onChange={(event) => setGate(event.target.value)} className="h-10 border border-input bg-background px-3 text-sm text-foreground">{gates.map((value) => <option key={value} value={value}>{value === "All" ? "Any gate" : value}</option>)}</select></label>
+            <label className="flex flex-col gap-1"><span className="mara-eyebrow text-muted-foreground">Verified feature</span><select value={feature} onChange={(event) => setFeature(event.target.value)} className="h-10 border border-input bg-background px-3 text-sm text-foreground">{features.map((value) => <option key={value} value={value}>{value === "All" ? "Any feature" : value}</option>)}</select></label>
             <label className="flex flex-col gap-1"><span className="mara-eyebrow text-muted-foreground">Stay type</span><select value={type} onChange={(event) => setType(event.target.value)} className="h-10 border border-input bg-background px-3 text-sm text-foreground">{types.map((value) => <option key={value} value={value}>{value === "All" ? "All types" : value}</option>)}</select></label>
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2" aria-label="Quick price filters">
               {categoryOptions.map((value) => <Button key={value} type="button" variant={category === value ? "default" : "outline"} size="sm" onClick={() => setCategory(value)} className="rounded-none">{value === "All" ? "All stays" : value}</Button>)}
             </div>
-            {(query || category !== "All" || locationKind !== "All" || gate !== "All" || type !== "All") && <Button variant="ghost" size="sm" onClick={clearFilters}><X className="size-4" aria-hidden="true" /> Clear filters</Button>}
+            {(query || category !== "All" || locationKind !== "All" || gate !== "All" || feature !== "All" || type !== "All") && <Button variant="ghost" size="sm" onClick={clearFilters}><X className="size-4" aria-hidden="true" /> Clear filters</Button>}
           </div>
         </div>
       </section>
