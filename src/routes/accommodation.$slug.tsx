@@ -40,7 +40,9 @@ function AccommodationDetailPage() {
       ? "Inside a private conservancy"
       : stay.locationKind === "community-conservancy"
         ? "Inside a community conservancy"
-        : "Outside the reserve";
+        : stay.locationKind === "nearby-access-area"
+          ? "Nearby gate / access area · outside reserve"
+          : "Outside the reserve";
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${stay.name} ${stay.location}`)}`;
 
   return (

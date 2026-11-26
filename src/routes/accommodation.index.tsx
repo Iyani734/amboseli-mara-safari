@@ -28,6 +28,7 @@ const locationOptions: { label: string; value: LocationKind | "All" }[] = [
   { label: "Private conservancies", value: "private-conservancy" },
   { label: "Community conservancies", value: "community-conservancy" },
   { label: "Outside the reserve", value: "outside-reserve" },
+  { label: "Near a gate or town", value: "nearby-access-area" },
 ];
 const categoryOptions: (PriceCategory | "All")[] = ["All", "Luxury", "Mid-range", "Budget"];
 const gates = ["All", "Sekenani Gate", "Talek Gate", "Oloolaimutia Gate", "Musiara Gate", "Sand River Gate", "Oloololo Gate"];
@@ -86,7 +87,7 @@ function AccommodationPage() {
             <div id="directory" className="mt-5 grid gap-4 sm:grid-cols-2">
               {locationOptions.slice(1).map((option) => (
                 <Button type="button" key={option.value} variant={locationKind === option.value ? "default" : "outline"} onClick={() => setLocationKind(option.value)} aria-pressed={locationKind === option.value} className="h-auto min-h-24 w-full flex-col items-start whitespace-normal rounded-none p-4 text-left shadow-none">
-                  <span className="mara-eyebrow opacity-75">{option.value === "reserve" ? "In the reserve" : option.value === "private-conservancy" ? "Privately managed land" : option.value === "community-conservancy" ? "Community-led conservation" : "Outside the boundary"}</span><span className="mt-2 block text-lg font-medium">{option.label}</span>
+                  <span className="mara-eyebrow opacity-75">{option.value === "reserve" ? "In the reserve" : option.value === "private-conservancy" ? "Privately managed land" : option.value === "community-conservancy" ? "Community-led conservation" : option.value === "nearby-access-area" ? "Gate and access areas" : "Outside the boundary"}</span><span className="mt-2 block text-lg font-medium">{option.label}</span>
                 </Button>
               ))}
               <a href="https://maraconservancies.org/mara-conservancies-map/" target="_blank" rel="noreferrer" className="flex items-center justify-between border border-border bg-card p-4 text-foreground transition-colors hover:border-primary"><span><span className="mara-eyebrow text-muted-foreground">Explore the ecosystem</span><span className="mt-2 block text-lg font-medium">Conservancy map</span></span><ArrowUpRight className="size-5 text-primary" aria-hidden="true" /></a>

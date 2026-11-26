@@ -91,7 +91,7 @@ export function CompareTray({ stays, onRemove, onClear }: {
               <tbody>
                 {[
                   ["Location", (stay: Accommodation) => stay.location],
-                  ["Location category", (stay: Accommodation) => stay.locationKind === "reserve" ? "Inside national reserve" : stay.locationKind === "private-conservancy" ? "Private conservancy" : stay.locationKind === "community-conservancy" ? "Community conservancy" : "Outside reserve"],
+                  ["Location category", (stay: Accommodation) => stay.locationKind === "reserve" ? "Inside national reserve" : stay.locationKind === "private-conservancy" ? "Private conservancy" : stay.locationKind === "community-conservancy" ? "Community conservancy" : stay.locationKind === "nearby-access-area" ? "Nearby gate / access area" : "Outside reserve"],
                   ["Accommodation type", (stay: Accommodation) => stay.type],
                   ["Price category", (stay: Accommodation) => stay.category ?? "Not confirmed"],
                   ["Nearest gate", (stay: Accommodation) => stay.nearestGate ?? "Not confirmed"],
